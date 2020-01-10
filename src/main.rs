@@ -12,7 +12,6 @@ use std::fs;
 fn evaluate(code: String) {
     let code_vec: Vec<char> = code.chars().collect();
     let code_without_comments = cleanup(code_vec);
-    println!("fmstr: {}", code_without_comments);
     let code_vec_fmt: Vec<char> = code_without_comments.chars().collect();
     let (bracemap, code_vec_fmt) = buildbracemap(code_vec_fmt);
 
@@ -124,7 +123,16 @@ fn execute(filename: String) {
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
-        println!("Please enter filename as an argument");
+        loop {
+            print!("bf$ ");
+            io::stdout().flush().unwrap();
+
+            let mut input = String::new();
+            io::stdin()
+                .read_line(&mut input)
+                .expect("error: unable to read user input");
+            evaluate(input)
+        }
     } else {
         let filename = String::from(&args[1]);
         println!("In file {}", filename);
